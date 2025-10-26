@@ -1,0 +1,774 @@
+1
+00:00:01,070 --> 00:00:07,010
+Assalamu alaikum, Muhammad! I am here for the Telegram application lessons.
+
+2
+00:00:07,010 --> 00:00:14,370
+...will be released. In the previous lesson, we looked at its source code. Telegram's source code,
+
+3
+00:00:14,370 --> 00:00:21,470
+its library and the integration of its files. We enabled it on the GitHub project.
+
+4
+00:00:21,470 --> 00:00:25,710
+We had set it up. But we saw that in the previous lesson.
+
+5
+00:00:29,494 --> 00:00:36,495
+Today, we will look at how to handle the authorization fields for Telegram in the UI.
+
+6
+00:00:36,495 --> 00:00:43,695
+We will see what we did last time. We had an existing file that...
+
+7
+00:00:43,695 --> 00:00:46,614
+I don't know, I just created it structured...
+
+8
+00:00:51,114 --> 00:00:55,515
+...with the Developer and Tester roles, organizing it into **Domain**, **Infrastructure**,
+
+9
+00:00:55,515 --> 00:01:00,394
+and **Presentation** layers, and I just opened it up here.
+
+10
+00:01:00,394 --> 00:01:05,275
+Because this uses the main functions of Telegram and then, for the Flutter presentation, Flutter is...
+
+11
+00:01:05,275 --> 00:01:10,975
+...used. I opened a folder called **Constant** inside **Domain**, and inside that,
+
+12
+00:01:10,975 --> 00:01:13,175
+I opened a file called **Credentials**.
+
+13
+00:01:13,435 --> 00:01:15,735
+I opened an object. Inside this object,
+
+14
+00:01:18,145 --> 00:01:25,405
+the Telegram credentials will be placed: Your **API ID**, **API hash**, and **database**
+
+15
+00:01:25,405 --> 00:01:30,485
+**encryption key**. The database encryption key is something you can generate yourself, it
+
+16
+00:01:30,485 --> 00:01:34,625
+should be auto-generated, and you might want to save it somewhere.
+
+17
+00:01:35,044 --> 00:01:39,685
+You need the **API ID** and **API hash** from Telegram, and you need to save them.
+
+18
+00:01:40,165 --> 00:01:44,085
+To get these, you need to go to the **Create Telegram Application** page.
+
+19
+00:01:45,405 --> 00:01:49,325
+You go to **Create your Telegram Application** and click the link. This is a very
+
+20
+00:01:49,325 --> 00:01:51,205
+detailed explanation of these steps.
+
+21
+00:01:51,205 --> 00:01:55,705
+You go into **API development**, and you'll need your phone number. You
+
+22
+00:01:55,705 --> 00:01:59,265
+create an application, and the created application will show you your credentials.
+
+23
+00:01:59,265 --> 00:02:05,385
+You fill in those details: the **API ID** and **API hash** that you wrote down.
+
+24
+00:02:05,385 --> 00:02:08,335
+You put it there. I think that's clear.
+
+25
+00:02:08,335 --> 00:02:15,095
+I will put the image here as a placeholder. But I will cover the image so it's clear.
+
+26
+00:02:15,095 --> 00:02:21,355
+Done, we have prepared this. Now we go back to the service.
+
+27
+00:02:21,355 --> 00:02:25,755
+The service is waiting here, and we will write in the service of this task...
+
+28
+00:02:25,755 --> 00:02:29,535
+...to Telegram, whether it's a notification, or getting channels, or our chats.
+
+29
+00:02:29,535 --> 00:02:47,380
+We will do everything. To do this, we need a Client in Telegram. A Client that calls, a Client that calls...
+
+30
+00:02:47,380 --> 00:02:52,079
+We need our own... Oh, a Client, that's what it is called, a Client that calls,
+
+31
+00:02:52,079 --> 00:02:57,640
+it's called a Client in my case. Oh, this one is from my structure.
+
+32
+00:02:58,399 --> 00:03:03,339
+Okay, we can save this structured **Client** as our own **Client**.
+
+33
+00:03:03,339 --> 00:03:09,700
+Okay, let's call it **TdClient** for short. What's next?
+
+34
+00:03:09,700 --> 00:03:13,880
+The next one is the **Telegram Client**, the **Telegram API**.
+
+35
+00:03:15,150 --> 00:03:21,310
+This service probably uses the Telegram database, and we'll have to deal with the package.
+
+36
+00:03:21,310 --> 00:03:30,110
+...for this class. You can watch the previous video. We need to open a **Telegram Client**.
+
+37
+00:03:30,110 --> 00:03:38,670
+We open it here. We take the credentials from the other file, for a quiet...
+
+38
+00:03:38,670 --> 00:03:47,350
+...maybe Telegram Flutter Telegram **Credentials**, **Credentials**.
+
+39
+00:03:47,350 --> 00:03:54,930
+Telegram Credentials. Okay. Next is our **late final**...
+
+40
+00:03:56,970 --> 00:03:59,290
+Is that the correct keyword?
+
+41
+00:03:59,930 --> 00:04:02,830
+Yes, I think so.
+
+42
+00:04:12,690 --> 00:04:19,550
+Oh, **initialization**. We'll leave it for now. I don't know why this code
+
+43
+00:04:19,550 --> 00:04:27,450
+changed. Let's show the samples. **API ID**. Let's make it **final**...
+
+44
+00:04:29,490 --> 00:04:30,550
+...first **String**.
+
+45
+00:04:30,550 --> 00:04:32,530
+**API ID** should be an **int**.
+
+46
+00:04:32,530 --> 00:04:35,770
+**API hash** should be a **String**. **API hash** is what I showed.
+
+47
+00:04:36,090 --> 00:04:51,680
+Next is **final late final String db.encryptionKey**. We need this for initialization, to always initialize...
+
+48
+00:04:51,680 --> 00:04:55,420
+We need this for initialization, to always initialize...
+
+49
+00:04:55,420 --> 00:04:59,500
+We need a **static late final int**...
+
+50
+00:05:01,820 --> 00:05:07,580
+...an **int** called **myUserId**. This user ID, from the Telegram user file,
+
+51
+00:05:07,580 --> 00:05:11,560
+is needed for many things, so I made it a global variable here.
+
+52
+00:05:11,560 --> 00:05:17,219
+I'm thinking this will optimize the code later, so let's leave it for now.
+
+53
+00:05:20,035 --> 00:05:29,895
+What else do we need? We will call the client from TdLib. The client calls TdLib.
+
+54
+00:05:29,895 --> 00:05:32,995
+...the client from TdLib.
+
+55
+00:05:37,235 --> 00:05:42,180
+...that client. We will save it as a **Client**. This **Client** is for when we...
+
+56
+00:05:44,260 --> 00:05:48,040
+...log in to our device. This is its **Instance**. Okay, let's leave it.
+
+57
+00:05:48,040 --> 00:05:49,380
+And what comes after this?
+
+58
+00:05:50,320 --> 00:05:54,900
+After this, for a static change, we'll create a **singleton**.
+
+59
+00:05:54,900 --> 00:06:01,440
+It will be initialized once, and the one that is placed will always run.
+
+60
+00:06:01,440 --> 00:06:06,340
+Here we open an **Instance**.
+
+61
+00:06:09,979 --> 00:06:12,419
+Now, I'll open a Telegram constructor.
+
+62
+00:06:12,419 --> 00:06:16,099
+The default constructor. I'll open a **private constructor**
+
+63
+00:06:16,099 --> 00:06:17,560
+and close the braces.
+
+64
+00:06:18,419 --> 00:06:23,719
+We select the **API hash** and everything inside this, but the importance is that it comes from **Credentials**.
+
+65
+00:06:23,719 --> 00:06:33,085
+The reason it didn't work... Let's check the reason why it didn't work. We need it to be static,
+
+66
+00:06:33,085 --> 00:06:35,065
+we take it from static, here we go.
+
+67
+00:06:35,685 --> 00:06:40,724
+Because the instance is created there. There are two other ways, that's fine.
+
+68
+00:06:40,724 --> 00:06:44,905
+We put this one in the constructor for now. **Credentials.apiId** is here.
+
+69
+00:06:44,905 --> 00:07:00,365
+The **API ID** is here. For now, it was fine, it won't be initialized again.
+
+70
+00:07:01,145 --> 00:07:07,645
+Now for this, to avoid confusion, we open a question mark and I know **TelegramClient**, inside this,
+
+71
+00:07:07,645 --> 00:07:13,865
+we check if the **instance** is null, and if the instance has not been initialized here,
+
+72
+00:07:13,865 --> 00:07:15,685
+for that, we initialize it again.
+
+73
+00:07:16,765 --> 00:07:22,164
+We initialize it with **TelegramClient**.
+
+74
+00:07:23,284 --> 00:07:26,690
+This is our private constructor.
+
+75
+00:07:26,690 --> 00:07:28,810
+What does the constructor return to us?
+
+76
+00:07:30,270 --> 00:07:33,450
+It returns this, assigning it to its variables.
+
+77
+00:07:33,690 --> 00:07:39,289
+Okay, now it's finally initialized and we **return** the **instance**.
+
+78
+00:07:39,289 --> 00:07:42,390
+That's it. But it didn't take anything.
+
+79
+00:07:42,690 --> 00:07:48,669
+**Telegram client can't be returned**. We messed up, we'll leave the nullability.
+
+80
+00:07:50,370 --> 00:07:57,315
+Okay, we left the nullability. This one is strong, maybe this one...
+
+81
+00:08:02,465 --> 00:08:10,785
+Ah, we need to force it, okay. Okay, after that, this one will be set after our
+
+82
+00:08:10,785 --> 00:08:17,285
+thought. Everything is ready. We have our credentials. The API is for
+
+83
+00:08:17,285 --> 00:08:23,405
+giving the information, and the server communicates with it. We have the most important part.
+
+84
+00:08:23,405 --> 00:08:28,165
+Now we need to figure out what happens when we log into Telegram. For example,
+
+85
+00:08:28,165 --> 00:08:32,645
+there will be a **homepage**, maybe later, or what happens when authorization is finished.
+
+86
+00:08:32,645 --> 00:08:39,245
+...We need a primary method.
+
+87
+00:08:40,464 --> 00:08:49,045
+We'll put a comment. It will be a `Future<void>`
+
+88
+00:08:50,625 --> 00:08:57,104
+called **initialize**. The purpose of initialize is to check if it's already logged in,
+
+89
+00:08:57,104 --> 00:08:58,865
+or not to lose the authorization.
+
+90
+00:08:59,324 --> 00:09:03,564
+It takes **BuildContext** and is **async**.
+
+91
+00:09:04,330 --> 00:09:14,600
+We use a **try-catch**. Inside, an **if** statement: if the **client** is null,
+
+92
+00:09:16,740 --> 00:09:26,360
+we create the client again. **client.create** is a method of the library that creates the client instance.
+
+93
+00:09:26,360 --> 00:09:31,785
+...the method of the library, **Create**.
+
+94
+00:09:31,785 --> 00:09:39,905
+Next, we use **await** and call **client.initialize**. We initialize it because if it's null, it won't be initialized,
+
+95
+00:09:39,905 --> 00:09:43,285
+so first we create its object,
+
+96
+00:09:43,285 --> 00:09:48,605
+and then we initialize it. Okay, after that, we have a method called **listenForUpdates**.
+
+97
+00:09:48,605 --> 00:09:57,215
+We call this method. This one is like a...
+
+98
+00:09:57,215 --> 00:10:01,275
+This one uses the **Telegram stream**.
+
+99
+00:10:01,275 --> 00:10:05,115
+It's a streamable platform. You are logged in from a device,
+
+100
+00:10:05,115 --> 00:10:06,835
+or you logged out from this platform.
+
+101
+00:10:06,835 --> 00:10:09,695
+It works in real-time in Telegram.
+
+102
+00:10:10,035 --> 00:10:13,415
+It doesn't send a GET request and wait for a response.
+
+103
+00:10:13,415 --> 00:10:20,850
+It works in real-time in Telegram. So, we're done. We call a method. You
+
+104
+00:10:20,850 --> 00:10:24,030
+need to go to the **login page** if you're trying to log in.
+
+105
+00:10:24,030 --> 00:10:27,510
+When you enter the SMS, it should show you a prompt.
+
+106
+00:10:27,510 --> 00:10:32,230
+We only have the authorization related method here now.
+
+107
+00:10:34,690 --> 00:10:36,730
+You enter your phone number, and it sends you an SMS.
+
+108
+00:10:36,730 --> 00:10:46,505
+...for the SMS, we call it **Authorization Updates**. It notifies you when your authorization number is entered.
+
+109
+00:10:46,505 --> 00:10:50,785
+It takes a **BuildContext** because from here we will manage the pages.
+
+110
+00:10:51,445 --> 00:10:55,925
+Because from here we will manage the pages. Which page should be waited for?
+
+111
+00:10:56,065 --> 00:10:58,345
+So, we call **client**.
+
+112
+00:11:00,405 --> 00:11:06,800
+**client.updates**. This is an update stream inside the client. It checks if the client is initialized,
+
+113
+00:11:06,800 --> 00:11:10,400
+or if a message came to you, or if there's an update.
+
+114
+00:11:10,400 --> 00:11:16,000
+Everything is here. It's a notification stream in Telegram. We used **listen**.
+
+115
+00:11:16,000 --> 00:11:20,689
+**Listen** is what waits and looks for things. There are **events** inside, and we can sort them by **event type**.
+
+116
+00:11:20,689 --> 00:11:22,790
+...sort them by **event type**.
+
+117
+00:11:23,150 --> 00:11:28,650
+**EventType** is what's used. We do **event.toJson**.
+
+118
+00:11:28,890 --> 00:11:31,829
+The **type** is inside the JSON.
+
+119
+00:11:32,170 --> 00:11:37,150
+There are types like this in Telegram. This tells you **ok**, or what step it is.
+
+120
+00:11:37,150 --> 00:11:38,569
+...what step it is.
+
+121
+00:11:38,569 --> 00:11:40,589
+We get the **type**.
+
+122
+00:11:41,130 --> 00:11:42,750
+The **type** is...
+
+123
+00:11:45,520 --> 00:11:48,640
+Okay, the event's type.
+
+124
+00:11:48,640 --> 00:11:53,420
+For example, **WaitingCode**, **WaitingConfirmationCode**.
+
+125
+00:11:53,420 --> 00:11:58,240
+This means you have entered your phone number into Telegram, and it's waiting for you to enter the SMS code.
+
+126
+00:11:58,240 --> 00:11:59,980
+That's one state.
+
+127
+00:12:00,180 --> 00:12:04,920
+**WaitingPhoneNumber** means it's waiting for you to enter the phone number. That's one state.
+
+128
+00:12:04,920 --> 00:12:06,480
+That's one state. We will manage this.
+
+129
+00:12:06,820 --> 00:12:10,850
+Now, we check: if the **Event type** is
+
+130
+00:12:16,550 --> 00:12:20,510
+**updateAuthorizationState**. The **authorization state** is what we always
+
+131
+00:12:20,510 --> 00:12:24,490
+want to set. It's better to use a class here because if there's a syntax
+
+132
+00:12:24,490 --> 00:12:29,170
+error, it's easier to handle. If the **event type** is
+
+133
+00:12:29,170 --> 00:12:35,230
+**updateAuthorizationState**, then something will happen.
+
+134
+00:12:36,430 --> 00:12:44,730
+This means we call the **updateAuthorizationState** class from the **TdLib database API**.
+
+135
+00:12:44,730 --> 00:12:52,730
+We call the class. The update is the event that came, cast as
+
+136
+00:12:52,730 --> 00:13:04,575
+**Td.AuthorizationUpdateAuthorizationState**.
+
+137
+00:13:04,575 --> 00:13:09,275
+We force the update to be non-null to always get a value.
+
+138
+00:13:09,455 --> 00:13:17,755
+Now we have **Td.AuthorizationState**... the update's authorization state.
+
+139
+00:13:17,755 --> 00:13:21,935
+...the update's authorization state.
+
+140
+00:13:22,495 --> 00:13:30,315
+Okay. Now we open another method called **onAuthChanged**. We'll call it that for now, but we'll change the name later.
+
+141
+00:13:30,315 --> 00:13:35,515
+We'll add more to the parameters. We'll call it **onAuthStateUpdated**.
+
+142
+00:13:35,515 --> 00:13:45,965
+This method will take the **AuthorizationState**. The **AuthorizationState** is what we got from watching the updates.
+
+143
+00:13:45,965 --> 00:13:55,064
+It's an **AuthorizationState**. This is what we will use to manage the UI. This is a very useful method.
+
+144
+00:13:55,064 --> 00:13:58,925
+We open a **switch-case** statement. This is what we'll use to manage the UI.
+
+145
+00:13:58,925 --> 00:14:03,800
+We open a **switch-case** statement.
+
+146
+00:14:03,800 --> 00:14:08,600
+...because it's the only one that works. Only the Telegram database gives us the correct state.
+
+147
+00:14:08,600 --> 00:14:13,380
+It won't give an error. If it does, we'll deal with it then.
+
+148
+00:14:13,380 --> 00:14:17,560
+Let's show it to our friends. OK.
+
+149
+00:14:17,560 --> 00:14:24,455
+The first method is **Initialize**. The **Client** is being initialized. The second method is to listen for updates.
+
+150
+00:14:24,655 --> 00:14:29,055
+Which state are you in? Should I show the phone number? Should I wait for the code?
+
+151
+00:14:29,055 --> 00:14:34,375
+Should I show the two-factor password? Should I show the homepage? It controls everything,
+
+152
+00:14:34,375 --> 00:14:40,440
+and it gives you the authorization state. For a mobile application, when you want to switch from one state to another,
+
+153
+00:14:40,440 --> 00:14:45,040
+when you want to log in, when you want to navigate to the homepage,
+
+154
+00:14:45,040 --> 00:14:50,880
+this method will help you. Now we will write inside this method.
+
+155
+00:14:50,880 --> 00:14:55,820
+We need the **AuthorizationState**. It takes **BuildContext** because through this **BuildContext**
+
+156
+00:14:55,820 --> 00:15:00,880
+we manage the UI. Now I won't manage it, but later I will.
+
+157
+00:15:00,880 --> 00:15:08,375
+We use **tdc.client** that came here. This is the main function that
+
+158
+00:15:08,375 --> 00:15:14,755
+will give us the result. The method will be called **switchCase**.
+
+159
+00:15:14,755 --> 00:15:23,655
+We'll use a **switch-case** statement. This is what we'll use to check the state. The code will only run
+
+160
+00:15:23,655 --> 00:15:31,195
+if it's logging in. This is how we do it: **switch(AuthorizationState.getConstructor())**.
+
+161
+00:15:31,195 --> 00:15:37,175
+...**switch(AuthorizationState.getConstructor())**.
+
+162
+00:15:37,175 --> 00:15:41,695
+**getConstructor** is what gives you the information.
+
+163
+00:15:42,935 --> 00:15:47,055
+**AuthorizationState** is the current user's state, what state they are in:
+
+164
+00:15:47,055 --> 00:15:51,555
+logged in, maybe signed up, or something else. We'll see.
+
+165
+00:15:56,640 --> 00:16:00,000
+It shows those things. So, we'll use a **case** statement:
+
+166
+00:16:00,000 --> 00:16:11,900
+**tda.authorizationState.waitPhoneNumber**. **WaitPhoneNumber**
+
+167
+00:16:11,900 --> 00:16:17,540
+means that Telegram is currently waiting for us to enter our phone number to log in.
+
+168
+00:16:17,540 --> 00:16:19,560
+That's a state.
+
+169
+00:16:19,560 --> 00:16:20,840
+We need to do something for that.
+
+170
+00:16:22,840 --> 00:16:25,420
+We need to write a line of code, like **await**...
+
+171
+00:16:28,225 --> 00:16:30,365
+This uses an **async** method.
+
+172
+00:16:32,485 --> 00:16:36,265
+**setTdlibParameters**. Do we need to set the parameters here?
+
+173
+00:16:37,585 --> 00:16:42,245
+No, we'll navigate to another page. If it's waiting for the phone number, then
+
+174
+00:16:42,245 --> 00:16:44,385
+then it's an **async** call.
+
+175
+00:16:47,165 --> 00:16:47,765
+future
+
+176
+00:16:52,745 --> 00:16:53,945
+**navigator.push**
+
+177
+00:16:58,720 --> 00:17:07,579
+**MaterialPageRoute**, the context, you're going to another page, we'll call that page
+
+178
+00:17:07,579 --> 00:17:12,680
+**AuthPage**. No, we'll call it **PhoneNumberPage**.
+
+179
+00:17:12,680 --> 00:17:14,880
+...**PhoneNumberPage**.
+
+180
+00:17:17,535 --> 00:17:22,015
+**PhonePage**. We need to navigate there. Everything is understood.
+
+181
+00:17:22,015 --> 00:17:26,795
+It will send you to the **Authorization Page** because you're not logged in.
+
+182
+00:17:26,795 --> 00:17:33,215
+...It will send you to the **Authorization Page**. You can pass this string to the constructor.
+
+183
+00:17:33,215 --> 00:17:39,775
+We will pass its constructor. If it's free, it will navigate to the next page.
+
+184
+00:17:39,775 --> 00:17:44,775
+Now before that, I need to check one more thing.
+
+185
+00:17:45,135 --> 00:17:56,155
+I'll put a **case** statement here: **case td.authorizationState.waitToDeleteParameter**.
+
+186
+00:17:56,155 --> 00:18:01,035
+...**waitToDeleteParameter**.
+
+187
+00:18:02,655 --> 00:18:04,235
+What does this return?
+
+...
+
+477
+00:46:14,270 --> 00:46:18,450
+If it's **Ready**, ready, then we'll accept the **homepage**.
+
+478
+00:46:22,580 --> 00:46:25,520
+Done, when we log in again...
+
+479
+00:46:30,690 --> 00:46:34,110
+...it's the **homepage** because we are authorized.
+
+480
+00:46:37,510 --> 00:46:41,190
+Our **homepage** might be Telegram...
+
+481
+00:46:43,640 --> 00:46:45,540
+...with a sidebar.
+
+482
+00:46:47,080 --> 00:46:48,700
+**Icons.menu**
+```
